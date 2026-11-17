@@ -39,17 +39,17 @@ func (s *TestSuite) TearDownSuite() {
 // Positive: Проверяем получение собственных объявлений в профиле
 func (s *TestSuite) TestGetMyAdvertisementsPositive() {
 	var advertisementsBody string
-	s.Run("Получаем список собственных объявлений", func() {
+	s.Run("get_own_ads", func() {
 		advertisementsBody = myAdvertisements.GetMyAdvertisements(s.T(), s.loginData.Token, http.StatusOK, 50)
 	})
 
 	var items gjson.Result
-	s.Run("Проверяем, что у нас есть несколько добавленных ранее объявлений", func() {
+	s.Run("check_list_is_not_empty", func() {
 		items = gjson.Get(advertisementsBody, "items")
 		require.NotEmpty(s.T(), items.Array())
 	})
 
-	s.Run("Проверяем, что наши объявления имеют принадлежность к нашему пользователю и объявления имеют НЕ пустые параметры", func() {
+	s.Run("check_ad_owner_and_fields", func() {
 		for _, item := range items.Array() {
 			require.Equal(s.T(), s.loginData.User.Id, gjson.Get(item.String(), "user_id").String(), "user_id не совпадает")
 
@@ -66,11 +66,11 @@ func (s *TestSuite) TestGetMyAdvertisementsPositive() {
 // Negative: Проверяем 401 ошибку при попытке получить собственные объявления без токена
 func (s *TestSuite) TestGetMyAdvertisementsIncorrectToken() {
 	var advertisementsBody string
-	s.Run("Получаем список собственных объявлений с неправильным авторизационным токеном", func() {
+	s.Run("get_own_ads_with_invalid_token", func() {
 		advertisementsBody = myAdvertisements.GetMyAdvertisements(s.T(), "incorrect_token", http.StatusUnauthorized, 50)
 	})
 
-	s.Run("Проверяем, что показывается правильная ошибка", func() {
+	s.Run("check_auth_error", func() {
 		require.Equal(s.T(), "unauthorized", gjson.Get(advertisementsBody, "error").String(),
 			"Некорректное значение error параметра")
 		require.Equal(s.T(), "Invalid or expired token", gjson.Get(advertisementsBody, "message").String(),

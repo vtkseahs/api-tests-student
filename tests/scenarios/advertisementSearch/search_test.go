@@ -56,12 +56,12 @@ func (s *TestSuite) TestSearchByTitleSubstring() {
 		name   string
 		search string
 	}{
-		{"начало", searchBeginning},
-		{"середина", searchMiddle},
-		{"конец", searchEnd},
-		{"нижний регистр", strings.ToLower(searchMiddle)},
-		{"верхний регистр", strings.ToUpper(searchMiddle)},
-		{"смешанный регистр", utils.MixCase(searchMiddle)},
+		{"prefix", searchBeginning},
+		{"middle", searchMiddle},
+		{"suffix", searchEnd},
+		{"lowercase", strings.ToLower(searchMiddle)},
+		{"uppercase", strings.ToUpper(searchMiddle)},
+		{"mixed_case", utils.MixCase(searchMiddle)},
 	}
 	for _, tc := range cases {
 		s.Run(tc.name, func() {
