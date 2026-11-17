@@ -53,3 +53,10 @@ TEST_PASSWORD=your_password
 ```bash
   golangci-lint run
 ```
+## Запуск
+Для запуска необходимо указать данные двух разных аккаунтов TestBoard в .env.override:
+
+TEST_LOGIN=first_email
+TEST_PASSWORD=first_password
+TEST_SECOND_LOGIN=second_email
+TEST_SECOND_PASSWORD=second_password
